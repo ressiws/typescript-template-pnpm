@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "NodeNext",
+        "lib": ["es5", "es6", "ESNext"],
+        // "rootDir": ".",
+        "noEmit": true,
+
+        "paths": {
+            "$types/*": ["../types/*"],
+            "$scripts/*": ["../scripts/*"],
+        },
+
+        "typeRoots": [ "../node_modules/@types"],
+
+        "allowImportingTsExtensions": true
+    },
+}
