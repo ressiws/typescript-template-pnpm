@@ -5,9 +5,9 @@
  */
 
 export const config = {
-    /** Clears previous build before compiling */
-    force_clean_build: false,
+	/** Clears previous build before compiling */
+	force_clean_build: false,
 
-    /** Debug mode */
-    maintenance: false,
-}
+	/** Debug mode */
+	maintenance: false,
+};

@@ -19,7 +19,7 @@ dotenv.config();
 
 //#region ============== Types ==============
 interface CLIOptions {
-    debug: boolean
+	debug: boolean
 }
 //#endregion
 
@@ -30,7 +30,7 @@ const VERSION = "1.0.0";
 
 //#region ============== Functions ==============
 async function script(options: CLIOptions) {
-    logger.pLog("Running script with options", options);
+	logger.pLog("Running script with options", options);
 }
 //#endregion
 
@@ -40,15 +40,15 @@ cli.help();
 cli.option("--debug, -d", "Enable debug mode");
 
 async function cliHandler() {
-    const { options } = cli.parse();
-    if (options.help || options.version) return; // Do not execute script if help message was requested.
+	const { options } = cli.parse();
+	if (options.help || options.version) return; // Do not execute script if help message was requested.
 
-    logger = getOrCreateGlobalLogger({ debug: options.debug });
+	logger = getOrCreateGlobalLogger({ debug: options.debug });
 
-    await script(options as CLIOptions);
+	await script(options as CLIOptions);
 }
 
 if (isBinMode(import.meta.url)) {
-    cliHandler();
+	cliHandler();
 }
 //#endregion

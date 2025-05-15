@@ -22,42 +22,42 @@ const { dirname: __dirname, filename: __filename } = makeLocations(import.meta.u
 
 //#region ============== Types ==============
 enum EnvType {
-    STRING = "string",
-    NUMBER = "number",
-    BOOLEAN = "boolean"
+	STRING = "string",
+	NUMBER = "number",
+	BOOLEAN = "boolean"
 
 }
 
 interface EnvVarBase {
-    name: string;
-    type: EnvType;
-    value: unknown;
+	name: string;
+	type: EnvType;
+	value: unknown;
 };
 
 interface StringEnvVar extends EnvVarBase {
-    type: EnvType.STRING;
-    value: string;
+	type: EnvType.STRING;
+	value: string;
 }
 
 interface NumberEnvVar extends EnvVarBase {
-    type: EnvType.NUMBER;
-    value: number;
+	type: EnvType.NUMBER;
+	value: number;
 }
 
 interface BooleanEnvVar extends EnvVarBase {
-    type: EnvType.BOOLEAN;
-    value: boolean;
+	type: EnvType.BOOLEAN;
+	value: boolean;
 }
 
 type EnvVar = StringEnvVar | NumberEnvVar | BooleanEnvVar;
 type EnvVarAnonymous = DistributiveOmit<EnvVar, "name">
 
 interface CLIOptions {
-    env: string;
-    output: string;
-    parser: boolean;
-    parserFilePath: string;
-    parserTypeImport: string;
+	env: string;
+	output: string;
+	parser: boolean;
+	parserFilePath: string;
+	parserTypeImport: string;
 }
 
 //#region ============== Constants ==============
@@ -93,94 +93,94 @@ const DEFAULT_PARSER_TEMPLATE = `/**
 
 //#region ============== Parser ==============
 class Parser {
-    vars: EnvVar[];
-    output: string;
-    capabilityText: string;
-    capabilities: number[];
-    metadata: Record<string, EnvType>;
+	public vars: EnvVar[];
+	public output: string;
+	private capabilityText: string;
+	private capabilities: number[];
+	private metadata: Record<string, EnvType>;
 
-    constructor(vars: EnvVar[]) {
-        this.vars = vars;
-        this.output = "";
-        this.capabilityText = "";
-        this.capabilities = [];
-        this.metadata = Object.fromEntries(vars.map(envVar => [envVar.name, envVar.type]));
+	constructor(vars: EnvVar[]) {
+		this.vars = vars;
+		this.output = "";
+		this.capabilityText = "";
+		this.capabilities = [];
+		this.metadata = Object.fromEntries(vars.map(envVar => [envVar.name, envVar.type]));
 
-        for (const envVar of vars) {
-            switch (envVar.type) {
-                case EnvType.STRING: {
-                    this.addStringCapability();
-                    break;
-                }
-                case EnvType.NUMBER: {
-                    this.addNumberCapability();
-                    break;
-                }
-                case EnvType.BOOLEAN: {
-                    this.addBooleanCapability();
-                    break;
-                }
-            }
-        }
-    }
+		for (const envVar of vars) {
+			switch (envVar.type) {
+				case EnvType.STRING: {
+					this.addStringCapability();
+					break;
+				}
+				case EnvType.NUMBER: {
+					this.addNumberCapability();
+					break;
+				}
+				case EnvType.BOOLEAN: {
+					this.addBooleanCapability();
+					break;
+				}
+			}
+		}
+	}
 
-    public CAPABILITIES = {
-        NUMBER: 0,
-        BOOLEAN: 1,
-        STRING: 2
-    } as const;
+	public CAPABILITIES = {
+		NUMBER: 0,
+		BOOLEAN: 1,
+		STRING: 2
+	} as const;
 
-    public CAPABILITY_NAMES = {
-        [this.CAPABILITIES.NUMBER]: "number",
-        [this.CAPABILITIES.BOOLEAN]: "boolean",
-        [this.CAPABILITIES.STRING]: "string"
-    } as const;
+	public CAPABILITY_NAMES = {
+		[this.CAPABILITIES.NUMBER]: "number",
+		[this.CAPABILITIES.BOOLEAN]: "boolean",
+		[this.CAPABILITIES.STRING]: "string"
+	} as const;
 
 
-    private addNumberCapability() {
-        if (this.capabilities.includes(this.CAPABILITIES.NUMBER)) return;
+	private addNumberCapability() {
+		if (this.capabilities.includes(this.CAPABILITIES.NUMBER)) return;
 
-        this.capabilityText += dedent`
+		this.capabilityText += dedent`
         case "number": {
             if (typeof process.env[name] === "number") return process.env[name]!;
             return parseFloat(process.env[name] as string) as unknown as NodeJS.ProcessEnv[T];
-        }`.split('\n').map(l => `        ${l}`).join('\n');
-        this.capabilityText += '\n';
+        }`.split("\n").map(l => `        ${l}`).join("\n");
+		this.capabilityText += "\n";
 
-        this.capabilities.push(this.CAPABILITIES.NUMBER);
-    }
+		this.capabilities.push(this.CAPABILITIES.NUMBER);
+	}
 
-    private addBooleanCapability() {
-        if (this.capabilities.includes(this.CAPABILITIES.BOOLEAN)) return;
+	private addBooleanCapability() {
+		if (this.capabilities.includes(this.CAPABILITIES.BOOLEAN)) return;
 
-        this.capabilityText += dedent`
+		this.capabilityText += dedent`
         case "boolean": {
             if (typeof process.env[name] === "boolean") return process.env[name]!;
             return process.env[name] === "true" as unknown as NodeJS.ProcessEnv[T];
-        }`.split('\n').map(l => `        ${l}`).join('\n');
-        this.capabilityText += '\n';
+        }`.split("\n").map(l => `        ${l}`).join("\n");
+		this.capabilityText += "\n";
 
-        this.capabilities.push(this.CAPABILITIES.BOOLEAN);
-    }
+		this.capabilities.push(this.CAPABILITIES.BOOLEAN);
+	}
 
-    private addStringCapability() {
-        if (this.capabilities.includes(this.CAPABILITIES.STRING)) return;
+	private addStringCapability() {
+		if (this.capabilities.includes(this.CAPABILITIES.STRING)) return;
 
-        this.capabilityText += `case "string": return process.env[name]!;`;
-        this.capabilityText += '\n';
+		this.capabilityText += `case "string": return process.env[name]!;`;
+		this.capabilityText += "\n";
 
-        this.capabilities.push(this.CAPABILITIES.STRING);
-    }
+		this.capabilities.push(this.CAPABILITIES.STRING);
+	}
 
-    public getMetadata() {
-        return dedent`
+	public getMetadata() {
+		return dedent`
             type EnvType = ${this.capabilities.map(c => `"${this.CAPABILITY_NAMES[c as keyof typeof this.CAPABILITY_NAMES]}"`).join(" | ")};
             const _env: Record<keyof NodeJS.ProcessEnv, EnvType> = ${JSON.stringify(this.metadata)} as const;
         `;
-    }
+	}
 
-    public toString() {
-        return dedent`
+	public toString() {
+		return dedent`
         function parseEnvVar<T extends keyof NodeJS.ProcessEnv>(name: T): NodeJS.ProcessEnv[T] | string {
             switch (_env[name]) {
                 ${this.capabilityText}
@@ -198,90 +198,90 @@ class Parser {
 
             process.env = Object.freeze(env);
         }`;
-    }
+	}
 }
 //#endregion
 
 //#region ============== Functions ==============
 function processEnvValue(value: string): EnvVarAnonymous {
-    if (/[0-9\-+]/.test(value[0])) { // Value is number candidate
-        if (/^[+-]?(\d+([.]\d*)?([eE][+-]?\d+)?)d?$/.test(value)) {
-            return { type: EnvType.NUMBER, value: Number(value) };
-        }
-    } else if (value === "true" || value === "false") {
-        return { type: EnvType.BOOLEAN, value: value === "true" };
-    }
+	if (/[0-9\-+]/.test(value[0])) { // Value is number candidate
+		if (/^[+-]?(\d+([.]\d*)?([eE][+-]?\d+)?)d?$/.test(value)) {
+			return { type: EnvType.NUMBER, value: Number(value) };
+		}
+	} else if (value === "true" || value === "false") {
+		return { type: EnvType.BOOLEAN, value: value === "true" };
+	}
 
-    return { type: EnvType.STRING, value };
+	return { type: EnvType.STRING, value };
 }
 
 function processEnvVariables(envContent: string): EnvVar[] {
-    const env = dotenv.parse(envContent);
-    logger.log("ENV:", env);
+	const env = dotenv.parse(envContent);
+	logger.log("ENV:", env);
 
-    const envVars: EnvVar[] = Object.entries(env).map(([name, val]) => {
-        const { type, value } = processEnvValue(val);
+	const envVars: EnvVar[] = Object.entries(env).map(([name, val]) => {
+		const { type, value } = processEnvValue(val);
 
-        return { name, type, value } as EnvVar;
-    });
+		return { name, type, value } as EnvVar;
+	});
 
-    return envVars;
+	return envVars;
 }
 
 function emitTypes(envVars: EnvVar[]): string {
-    let content = "";
-    content += `declare namespace NodeJS {\n    export interface ProcessEnv {\n`;
-    content += envVars.map(envVar => `        ${envVar.name}: ${envVar.type},`).join('\n');
-    content += "\n    }\n}\n";
+	let content = "";
+	content += `declare namespace NodeJS {\n    export interface ProcessEnv {\n`;
+	content += envVars.map(envVar => `        ${envVar.name}: ${envVar.type},`).join("\n");
+	content += "\n    }\n}\n";
 
-    return content;
+	return content;
 }
 
 async function emitParser(envVars: EnvVar[], outputPath: string, typeImport: string) {
-    const parser = new Parser(envVars);
+	const parser = new Parser(envVars);
 
-    const content = DEFAULT_PARSER_TEMPLATE
-        .replace("{FILENAME}", path.basename(outputPath))
-        .replace("{TYPE_IMPORT}", `import "${typeImport}";`)
-        .replace("{METADATA}", parser.getMetadata())
-        .replace("{PARSER}", parser.toString());
+	const content = DEFAULT_PARSER_TEMPLATE
+		.replace("{FILENAME}", path.basename(outputPath))
+		.replace("{TYPE_IMPORT}", `import "${typeImport}";`)
+		.replace("{METADATA}", parser.getMetadata())
+		.replace("{PARSER}", parser.toString());
 
-    return fsp.writeFile(outputPath, content, { encoding: "utf8" });
+	return fsp.writeFile(outputPath, content, { encoding: "utf8" });
 }
 
 async function processEnvFile(options: CLIOptions) {
-    const envPath = path.resolve(process.cwd(), options.env);
-    const outputPath = path.resolve(process.cwd(), options.output);
-    const relativePath = path.relative(path.dirname(outputPath), envPath);
+	const envPath = path.resolve(process.cwd(), options.env);
+	const outputPath = path.resolve(process.cwd(), options.output);
+	const relativePath = path.relative(path.dirname(outputPath), envPath);
 
-    logger.pInfo("Processing .env file:", envPath);
+	logger.pInfo("Processing .env file:", envPath);
 
-    logger.info("Reading .env file...");
-    const envContent = await fsp.readFile(envPath, "utf8");
-    logger.success("Successfully read .env file.");
+	logger.info("Reading .env file...");
+	const envContent = await fsp.readFile(envPath, "utf8");
+	logger.success("Successfully read .env file.");
 
-    logger.info("Processing environment variables...");
-    const envVars = processEnvVariables(envContent);
-    logger.success(`Successfully processed ${envVars.length} environment variables.`);
+	logger.info("Processing environment variables...");
+	const envVars = processEnvVariables(envContent);
+	logger.success(`Successfully processed ${envVars.length} environment variables.`);
 
-    logger.info("Generating types...");
-    const typesContent = emitTypes(envVars);
+	logger.info("Generating types...");
+	const typesContent = emitTypes(envVars);
 
-    const outputContent = DEFAULT_TYPES_TEMPLATE
-        .replace("{TYPES}", typesContent)
-        .replace("{ENV_PATH_RESOLVED}", relativePath);
-    logger.success("Successfully generated types.");
+	const outputContent = DEFAULT_TYPES_TEMPLATE
+		.replace("{TYPES}", typesContent)
+		.replace("{ENV_PATH_RESOLVED}", relativePath);
+	logger.success("Successfully generated types.");
 
-    await fsp.mkdir(path.dirname(outputPath), { recursive: true });
-    await fsp.writeFile(outputPath, outputContent, { encoding: "utf8" });
-    logger.pSuccess("Successfully wrote types to:", outputPath);
+	await fsp.mkdir(path.dirname(outputPath), { recursive: true });
+	await fsp.writeFile(outputPath, outputContent, { encoding: "utf8" });
+	logger.pSuccess("Successfully wrote types to:", outputPath);
 
-    if (options.parser) {
-        const parserFilePath = path.resolve(process.cwd(), options.parserFilePath);
-        logger.info("Generating parser file...");
-        await emitParser(envVars, parserFilePath, options.parserTypeImport);
-        logger.pSuccess("Successfully wrote parser to:", parserFilePath);
-    }
+	if (options.parser) {
+		const parserFilePath = path.resolve(process.cwd(), options.parserFilePath);
+		logger.info("Generating parser file...");
+		await emitParser(envVars, parserFilePath, options.parserTypeImport);
+		logger.pSuccess("Successfully wrote parser to:", parserFilePath);
+	}
 }
 //#endregion
 
@@ -296,14 +296,14 @@ cli.option("--parserFilePath <path>", "Path to the parser file", { default: DEFA
 cli.option("--parserTypeImport <path>", "Path to the types file for the parser.", { default: DEFAULT_PARSER_TYPE_IMPORT });
 
 async function cliHandler() {
-    const { options } = cli.parse();
-    if (options.help || options.version) return; // Do not execute script if help message was requested.
+	const { options } = cli.parse();
+	if (options.help || options.version) return; // Do not execute script if help message was requested.
 
-    logger = getOrCreateGlobalLogger({ debug: options.debug });
-    await processEnvFile(options as CLIOptions);
+	logger = getOrCreateGlobalLogger({ debug: options.debug });
+	await processEnvFile(options as CLIOptions);
 }
 
 if (isBinMode(import.meta.url)) {
-    cliHandler();
+	cliHandler();
 }
 //#endregion

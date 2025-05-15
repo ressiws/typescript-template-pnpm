@@ -3,7 +3,6 @@
  */
 
 import { URL } from "url";
-import { TlsOptions } from "tls";
 import Dispatcher from "./dispatcher";
 import DispatchInterceptor from "./dispatcher";
 import buildConnector from "./connector";
@@ -14,11 +13,11 @@ import buildConnector from "./connector";
 export class Client extends Dispatcher {
 	constructor(url: string | URL, options?: Client.Options);
 	/** Property to get and set the pipelining factor. */
-	pipelining: number;
+	private pipelining: number;
 	/** `true` after `client.close()` has been called. */
-	closed: boolean;
+	private closed: boolean;
 	/** `true` after `client.destroyed()` has been called or `client.close()` has been called and the client shutdown has completed. */
-	destroyed: boolean;
+	private destroyed: boolean;
 }
 
 export declare namespace Client {
@@ -75,7 +74,7 @@ export declare namespace Client {
 		/** Enables a family autodetection algorithm that loosely implements section 5 of RFC 8305. */
 		autoSelectFamily?: boolean;
 		/** The amount of time in milliseconds to wait for a connection attempt to finish before trying the next address when using the `autoSelectFamily` option. */
-		autoSelectFamilyAttemptTimeout?: number; 
+		autoSelectFamilyAttemptTimeout?: number;
 	}
 	export interface SocketInfo {
 		localAddress?: string

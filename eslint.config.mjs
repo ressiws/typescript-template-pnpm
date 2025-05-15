@@ -9,72 +9,72 @@ import { FlatCompat } from "@eslint/eslintrc";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
+	baseDirectory: __dirname,
+	recommendedConfig: js.configs.recommended,
+	allConfig: js.configs.all
 });
 
 export default [{
-    ignores: ["**/node_modules", "**/dist"],
+	ignores: ["**/node_modules", "**/dist"],
 }, ...compat.extends(
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
+	"eslint:recommended",
+	"plugin:@typescript-eslint/eslint-recommended",
+	"plugin:@typescript-eslint/recommended",
 ), {
-    plugins: {
-        "@typescript-eslint": typescriptEslint,
-    },
+	plugins: {
+		"@typescript-eslint": typescriptEslint,
+	},
 
-    languageOptions: {
-        globals: {
-            ...globals.node,
-        },
+	languageOptions: {
+		globals: {
+			...globals.node,
+		},
 
-        parser: tsParser,
-    },
+		parser: tsParser,
+	},
 
-    rules: {
-        semi: ["error", "always"],
+	rules: {
+		semi: ["error", "always"],
 
-        indent: ["error", 4, {
-            SwitchCase: 1,
-        }],
+		indent: ["error", "tab", {
+			SwitchCase: 1,
+		}],
 
-        quotes: ["error", "double", {
-            allowTemplateLiterals: true,
-        }],
+		quotes: ["error", "double", {
+			allowTemplateLiterals: true,
+		}],
 
-        "@typescript-eslint/explicit-member-accessibility": ["error", {
-            accessibility: "explicit",
+		"@typescript-eslint/explicit-member-accessibility": ["error", {
+			accessibility: "explicit",
 
-            overrides: {
-                accessors: "off",
-                constructors: "off",
-                methods: "explicit",
-                properties: "explicit",
-                parameterProperties: "off",
-            },
-        }],
+			overrides: {
+				accessors: "off",
+				constructors: "off",
+				methods: "explicit",
+				properties: "explicit",
+				parameterProperties: "off",
+			},
+		}],
 
-        "@typescript-eslint/explicit-function-return-type": ["error", {
-            allowExpressions: true,
-            allowTypedFunctionExpressions: true,
-            allowHigherOrderFunctions: true,
-            allowDirectConstAssertionInArrowFunctions: false,
-            allowConciseArrowFunctionExpressionsStartingWithVoid: false,
-            allowFunctionsWithoutTypeParameters: true,
-            allowedNames: [],
-            allowIIFEs: true,
-        }],
+		"@typescript-eslint/explicit-function-return-type": ["error", {
+			allowExpressions: true,
+			allowTypedFunctionExpressions: true,
+			allowHigherOrderFunctions: true,
+			allowDirectConstAssertionInArrowFunctions: false,
+			allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+			allowFunctionsWithoutTypeParameters: true,
+			allowedNames: [],
+			allowIIFEs: true,
+		}],
 
-        "@typescript-eslint/no-unused-vars": ["error", {
-            args: "all",
-            argsIgnorePattern: "^_",
-            caughtErrors: "all",
-            caughtErrorsIgnorePattern: "^_",
-            destructuredArrayIgnorePattern: "^_",
-            varsIgnorePattern: "^_",
-            ignoreRestSiblings: true,
-        }],
-    },
+		"@typescript-eslint/no-unused-vars": ["error", {
+			args: "all",
+			argsIgnorePattern: "^_",
+			caughtErrors: "all",
+			caughtErrorsIgnorePattern: "^_",
+			destructuredArrayIgnorePattern: "^_",
+			varsIgnorePattern: "^_",
+			ignoreRestSiblings: true,
+		}],
+	},
 }];

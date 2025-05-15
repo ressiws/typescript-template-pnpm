@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Taken from https://github.com/nodejs/undici/tree/23e62c4c0ac992be4fcd5a95151f9edeb76d03cd/types/readable.d.ts
  */
@@ -17,28 +18,28 @@ declare class BodyReadable extends Readable {
 	/** Consumes and returns the body as a string
 	 *  https://fetch.spec.whatwg.org/#dom-body-text
 	 */
-	text(): Promise<string>
+	private text(): Promise<string>
 
 	/** Consumes and returns the body as a JavaScript Object
 	 *  https://fetch.spec.whatwg.org/#dom-body-json
 	 */
-	json(): Promise<any>
+	private json(): Promise<any>
 
 	/** Consumes and returns the body as a Blob
 	 *  https://fetch.spec.whatwg.org/#dom-body-blob
 	 */
-	blob(): Promise<Blob>
+	private blob(): Promise<Blob>
 
 	/** Consumes and returns the body as an ArrayBuffer
 	 *  https://fetch.spec.whatwg.org/#dom-body-arraybuffer
 	 */
-	arrayBuffer(): Promise<ArrayBuffer>
+	private arrayBuffer(): Promise<ArrayBuffer>
 
 	/** Not implemented
 	 *
 	 *  https://fetch.spec.whatwg.org/#dom-body-formdata
 	 */
-	formData(): Promise<never>
+	private formData(): Promise<never>
 
 	/** Returns true if the body is not null and the body has been consumed
 	 *
@@ -46,7 +47,7 @@ declare class BodyReadable extends Readable {
 	 *
 	 * https://fetch.spec.whatwg.org/#dom-body-bodyused
 	 */
-	readonly bodyUsed: boolean;
+	private readonly bodyUsed: boolean;
 
 	/** Throws on node 16.6.0
 	 *
@@ -56,10 +57,10 @@ declare class BodyReadable extends Readable {
 	 *
 	 *  https://fetch.spec.whatwg.org/#dom-body-body
 	 */
-	readonly body: never | undefined;
+	private readonly body: never | undefined;
 
 	/** Dumps the response body by reading `limit` number of bytes.
 	 * @param opts.limit Number of bytes to read (optional) - Default: 262144
 	 */
-	dump(opts?: { limit: number }): Promise<void>
+	private dump(opts?: { limit: number }): Promise<void>
 }

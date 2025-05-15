@@ -29,12 +29,12 @@ export declare class File extends Blob {
 	/**
 	 * Name of the file referenced by the File object.
 	 */
-	readonly name: string;
+	private readonly name: string;
 
 	/**
 	 * The last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
 	 */
-	readonly lastModified: number;
+	private readonly lastModified: number;
 
-	readonly [Symbol.toStringTag]: string;
+	private readonly [Symbol.toStringTag]: string;
 }

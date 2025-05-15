@@ -60,12 +60,25 @@ pnpm run dev
 ```bash
 pnpm run build
 ```
+### Optional build flags:
+- `--debug`: Shows detailed builder logs
 
-4. Extra build options:
+> Example:
 ```bash
-pnpm run build --debug # Shows detailed builder logs
-pnpm run build --force # Cleans previous build and rebuilds from scratch
+pnpm run build --debug
 ```
+
+# 📜 Scripts
+| Command                         | Description |
+|---------------------------------|-------------|
+| `pnpm run dev`                  | Starts in dev mode with file watching. Reloads on Save. |
+| `pnpm run build`				  | Builds the project using the custom builder. |
+| `pnpm run build --debug`        | Shows detailed builder logs (useful for debugging build issues.) |
+| `pnpm run lint`                 | Lints the code using ESLint to catch errors and enforce style. |
+| `pnpm run backup <msg>`         | Creates a `.zip` backup of the current state. |
+
+> [!TIP]
+> Run `pnpm run lint` before **build** to avoid dumb mistakes in production.
 
 > [!WARNING]
 > Using `--force` will take more time bacause it fully resets the build folder and start from a clean state.
