@@ -99,6 +99,8 @@ pnpm run build --debug
 # 🧾 License
 This project is licensed under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/) — Use freely with credit. See [LICENSE.md](./LICENSE.md).
 
+> You can use it for whatever you want — commercial or not — as long as you give credit. Don’t worry, we won't sue you for becoming a millionaire off this… probably.
+
 # 🙌 Credits
 Built with ❤️ by [DarkenLM](https://github.com/darkenlm) and [swisser](https://github.com/ressiws), just two devs who believe semicolons are optional but clean code isn't.
 
