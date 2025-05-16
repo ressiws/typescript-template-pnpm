@@ -97,9 +97,7 @@ pnpm run build --debug
 - The builder takes care of everything — you don't need to configure anything else.
 
 # 🧾 License
-This project is licensed under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
-
-You are free to use, modify, and redistribute the code, even commercially — as long as you **give appropriate credit.**
+This project is licensed under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/) — Use freely with credit. See [LICENSE.md](./LICENSE.md).
 
 # 🙌 Credits
 Built with ❤️ by [DarkenLM](https://github.com/darkenlm) and [swisser](https://github.com/ressiws), just two devs who believe semicolons are optional but clean code isn't.
