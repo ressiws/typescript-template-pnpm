@@ -104,4 +104,4 @@ You are free to use, modify, and redistribute the code, even commercially — as
 # 🙌 Credits
 Built with ❤️ by [DarkenLM](https://github.com/darkenlm) and [swisser](https://github.com/ressiws), just two devs who believe semicolons are optional but clean code isn't.
 
-> They log with emojis, debug with sarcasm, and break this just to fix them better.
+> They log with emojis, debug with sarcasm, and write better README files than code (allegedly).
