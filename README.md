@@ -28,7 +28,6 @@ It includes a **custom builder** that compiles your code and handles everything 
   - Fixes TypeScript import paths after build
   - Clean and colorful logs with emojis
   - Optional `--debug` mode to show what's going on under the hood
-  - `--force` option to clean and rebuild everything from scratch
 - 🖥️ **Developer mode** with `pnpm run dev` — auto-restarts and watches for changes
 - 📋 **Custom logger** with log levels (info, warn, error) and emojis
 - 🔍 **ESLint** for code quality
