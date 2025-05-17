@@ -29,7 +29,7 @@ It includes a **custom builder** that compiles your code and handles everything 
   - Clean and colorful logs with emojis
   - Optional `--debug` mode to show what's going on under the hood
 - 🖥️ **Developer mode** with `pnpm run dev` — auto-restarts and watches for changes
-- 📋 **Custom logger** with log levels (info, warn, error) and emojis
+- 📋 **Custom logger** with log levels (debug, info, warn, error, critical) and emojis
 - 🔍 **ESLint** for code quality
 - 🧱 Minimal and clean project structure
 
@@ -78,9 +78,6 @@ pnpm run build --debug
 
 > [!TIP]
 > Run `pnpm run lint` before **build** to avoid dumb mistakes in production.
-
-> [!WARNING]
-> Using `--force` will take more time bacause it fully resets the build folder and start from a clean state.
 
 > [!CAUTION]
 > Don't use `debug` mode in production. The config system will automatically warn you if it's enabled while in a production environment.
