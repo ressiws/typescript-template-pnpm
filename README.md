@@ -1,4 +1,4 @@
-# ⚙️ TypeScript PNPM Base
+# ⚙️ TypeScript PNPM Base 
 
 ![Node.js](https://img.shields.io/badge/Node.js-18+-green?logo=node.js)
 ![Made with PNPM](https://img.shields.io/badge/Built%20with-PNPM-f69220?logo=pnpm)
