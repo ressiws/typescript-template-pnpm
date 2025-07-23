@@ -1,4 +1,4 @@
-# ⚙️ TypeScript PNPM Base
+# ⚙️ TypeScript PNPM Base 
 
 ![Node.js](https://img.shields.io/badge/Node.js-18+-green?logo=node.js)
 ![Made with PNPM](https://img.shields.io/badge/Built%20with-PNPM-f69220?logo=pnpm)
@@ -28,9 +28,8 @@ It includes a **custom builder** that compiles your code and handles everything 
   - Fixes TypeScript import paths after build
   - Clean and colorful logs with emojis
   - Optional `--debug` mode to show what's going on under the hood
-  - `--force` option to clean and rebuild everything from scratch
 - 🖥️ **Developer mode** with `pnpm run dev` — auto-restarts and watches for changes
-- 📋 **Custom logger** with log levels (info, warn, error) and emojis
+- 📋 **Custom logger** with log levels (debug, info, warn, error, critical) and emojis
 - 🔍 **ESLint** for code quality
 - 🧱 Minimal and clean project structure
 
@@ -80,9 +79,6 @@ pnpm run build --debug
 > [!TIP]
 > Run `pnpm run lint` before **build** to avoid dumb mistakes in production.
 
-> [!WARNING]
-> Using `--force` will take more time bacause it fully resets the build folder and start from a clean state.
-
 > [!CAUTION]
 > Don't use `debug` mode in production. The config system will automatically warn you if it's enabled while in a production environment.
 
@@ -97,9 +93,9 @@ pnpm run build --debug
 - The builder takes care of everything — you don't need to configure anything else.
 
 # 🧾 License
-This project is licensed under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+This project is licensed under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/) — Use freely with credit. See [LICENSE.md](./LICENSE.md).
 
-You are free to use, modify, and redistribute the code, even commercially — as long as you **give appropriate credit.**
+> You can use it for whatever you want — commercial or not — as long as you give credit. Don’t worry, we won't sue you for becoming a millionaire off this… probably.
 
 # 🙌 Credits
 Built with ❤️ by [DarkenLM](https://github.com/darkenlm) and [swisser](https://github.com/ressiws), just two devs who believe semicolons are optional but clean code isn't.
