@@ -5,9 +5,12 @@
  */
 
 export const config = {
-	/** Clears previous build before compiling */
-	force_clean_build: false,
-
 	/** Debug mode */
 	maintenance: false,
+
+	/** Logger configuration */
+	logger: {
+		/** Number of days to keep log files before deleting */
+		retentionDays: 7,
+	}
 };

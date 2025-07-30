@@ -1,13 +1,14 @@
 import path from "path";
 import winston from "winston";
 import fs from "fs";
+import { config } from "@/config.js";
 
 type LogObject = {
 	stack?: string;
 } & Record<string, unknown>;
 
 const LOG_DIR = path.resolve("logs");
-const LOG_RETENTION_DAYS = 7;
+const LOG_RETENTION_DAYS = config.logger.retentionDays || 7;
 
 const getLogLevelEmoji = (level: string): string => {
 	const emojis: Record<string, string> = {
@@ -23,6 +24,10 @@ const getLogLevelEmoji = (level: string): string => {
 };
 
 const cleanOldLogs = () => {
+	if (!fs.existsSync(LOG_DIR)) {
+		fs.mkdirSync(LOG_DIR, { recursive: true });
+	}
+
 	const now = Date.now();
 	const retentionPeriod = LOG_RETENTION_DAYS * 24 * 60 * 60 * 1000;
 
