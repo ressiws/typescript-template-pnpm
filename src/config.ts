@@ -2,6 +2,8 @@
  * @file config.ts
  * @description Contains both general and builder-specific configurations.
  * @version 1.0.0
+ *
+ * Copyright (c) 2026 swisser
  */
 
 export const config = {

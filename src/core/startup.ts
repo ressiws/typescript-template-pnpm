@@ -26,7 +26,7 @@ export class Startup {
 	/**
 	 * Private method for simulating the loading of a component or module (example only)
 	 */
-	private static async simulateLoading(component: string) {
+	private static async simulateLoading(component: string): Promise<void> {
 		logger.info(`Loading '${component}' component...`);
 
 		// Simulates component loading delay (1-2 seconds)

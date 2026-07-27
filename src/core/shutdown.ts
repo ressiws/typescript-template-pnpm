@@ -36,9 +36,7 @@ export class ShutdownManager {
 		logger.warn(`Shutdown requested (${reason}).`);
 
 		try {
-			logger.info("Stopping cron tasks...");
-
-
+			// add your cleanup logic here, e.g., closing database connections, stopping servers, etc.
 
 			logger.success("Shutdown completed.");
 		}
