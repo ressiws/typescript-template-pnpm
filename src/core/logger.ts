@@ -1,14 +1,31 @@
+/**
+ * @file logger.ts
+ * @version 1.0.0
+ *
+ * Copyright (c) 2026 swisser
+ */
+
+import fs from "fs";
 import path from "path";
 import winston from "winston";
-import fs from "fs";
-import { config } from "@/config.js";
+import { Time } from "../utils/time.js";
 
 type LogObject = {
 	stack?: string;
 } & Record<string, unknown>;
 
+export enum LogCategory {
+	COMMAND = "COMMAND",
+	EVENT = "EVENT",
+	STARTUP = "STARTUP",
+	DATABASE = "DATABASE",
+	SYSTEM = "SYSTEM",
+	PERMISSION = "PERMISSION",
+	GRAPHICS = "GRAPHICS",
+}
+
 const LOG_DIR = path.resolve("logs");
-const LOG_RETENTION_DAYS = config.logger.retentionDays || 7;
+const LOG_RETENTION_DAYS = 7;
 
 const getLogLevelEmoji = (level: string): string => {
 	const emojis: Record<string, string> = {
@@ -17,19 +34,14 @@ const getLogLevelEmoji = (level: string): string => {
 		success: "✅",
 		error: "🔥",
 		warn: "☣",
-		critical: "☠",
 	};
 
 	return emojis[level] || "ℹ️";
 };
 
 const cleanOldLogs = () => {
-	if (!fs.existsSync(LOG_DIR)) {
-		fs.mkdirSync(LOG_DIR, { recursive: true });
-	}
-
 	const now = Date.now();
-	const retentionPeriod = LOG_RETENTION_DAYS * 24 * 60 * 60 * 1000;
+	const retentionPeriod = Time.days(LOG_RETENTION_DAYS);
 
 	fs.readdir(LOG_DIR, (err, files) => {
 		if (err) {
@@ -63,11 +75,18 @@ const cleanOldLogs = () => {
 };
 
 cleanOldLogs();
-setInterval(cleanOldLogs, 24 * 60 * 60 * 1000);
+setInterval(cleanOldLogs, Time.hours(24)); // Run cleanup every 24 hours
 
 export class Logger {
 	private log_data: string | null;
 	private logger: winston.Logger;
+
+	private formatMessage(message: string, category?: LogCategory): string {
+		if (!category)
+			return message;
+
+		return `[${category}] ${message}`;
+	}
 
 	constructor() {
 		this.log_data = null;
@@ -152,28 +171,24 @@ export class Logger {
 		this.logger = logger;
 	}
 
-	public async debug(message: string, obj?: unknown) {
-		this.logger.log("debug", message, obj ? { obj } : undefined);
+	public async debug(message: string, category?: LogCategory, obj?: unknown) {
+		this.logger.log("debug", this.formatMessage(message, category), obj ? { obj } : undefined);
 	}
 
-	public async info(message: string, obj?: unknown) {
-		this.logger.log("info", message, obj ? { obj } : undefined);
+	public async info(message: string, category?: LogCategory, obj?: unknown) {
+		this.logger.log("info", this.formatMessage(message, category), obj ? { obj } : undefined);
 	}
 
-	public async success(message: string, obj?: unknown) {
-		this.logger.log("success", message, obj ? { obj } : undefined);
+	public async success(message: string, category?: LogCategory, obj?: unknown) {
+		this.logger.log("success", this.formatMessage(message, category), obj ? { obj } : undefined);
 	}
 
-	public async error(message: string, obj?: unknown) {
-		this.logger.log("error", message, obj ? { obj } : undefined);
+	public async error(message: string, category?: LogCategory, obj?: unknown) {
+		this.logger.log("error", this.formatMessage(message, category), obj ? { obj } : undefined);
 	}
 
-	public async warn(message: string, obj?: unknown) {
-		this.logger.log("warn", message, obj ? { obj } : undefined);
-	}
-
-	public async critical(message: string, obj?: unknown) {
-		this.logger.log("critical", message, obj ? { obj } : undefined);
+	public async warn(message: string, category?: LogCategory, obj?: unknown) {
+		this.logger.log("warn", this.formatMessage(message, category), obj ? { obj } : undefined);
 	}
 }
 

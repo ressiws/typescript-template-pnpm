@@ -1,9 +1,13 @@
-import "@utils/exception.js";
-import { logger } from "./utils/logger.js";
-import { loader } from "./utils/loader.js";
+import { logger } from "./core/logger.js";
+import { ShutdownManager } from "./core/shutdown.js";
+import { Startup } from "./core/startup.js";
 
-// Initialize the loader and handle any errors during the startup process
-await loader.init().catch((error) => {
-	logger.error(`Uncaught error in the loader initialization: ${error}`);
-	process.exit(1);
-});
+try {
+	ShutdownManager.registerProcessListeners();
+
+	await Startup.start();
+}
+catch (error) {
+	logger.error(`Uncaught error in the startup process: ${error}`);
+	process.exitCode = 1;
+}

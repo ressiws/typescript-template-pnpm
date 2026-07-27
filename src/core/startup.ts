@@ -7,13 +7,12 @@
 import { config } from "@/config.js";
 import { logger } from "./logger.js";
 
-class Loader {
-	constructor() { }
+export class Startup {
 
 	/**
-     * Starts the boot process and logging the status
-     */
-	public static async init() {
+	 * Starts the boot process and logging the status
+	 */
+	public static async start(): Promise<void> {
 		logger.info("Initializing TypeScript PNPM Template..");
 
 		if (config.maintenance)
@@ -25,8 +24,8 @@ class Loader {
 	}
 
 	/**
-     * Private method for simulating the loading of a component or module (example only)
-     */
+	 * Private method for simulating the loading of a component or module (example only)
+	 */
 	private static async simulateLoading(component: string) {
 		logger.info(`Loading '${component}' component...`);
 
@@ -36,5 +35,3 @@ class Loader {
 		logger.success(`The component '${component}' has been successfully loaded.`);
 	}
 }
-
-export const loader = Loader;
